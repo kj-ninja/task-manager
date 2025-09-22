@@ -49,7 +49,7 @@ This project serves as a comprehensive frontend development learning platform, c
 
 ### Development
 - **TypeScript** with strict configuration
-- **ESLint** + **Biome** for code quality and formatting
+- **Biome** for fast linting, formatting, and import sorting
 - **Vitest** + **Testing Library** for component testing
 
 ## 📁 Project Structure
@@ -118,3 +118,67 @@ This project is designed to demonstrate and practice:
 - Security considerations
 - Performance monitoring
 - Code organization and scalability
+
+## 🚀 Deployment Infrastructure
+
+### Production Deployment Strategy
+
+**Frontend Hosting**: **Vercel** (Recommended)
+- ✅ **Zero-config** Vite deployment
+- ✅ **Automatic previews** for pull requests
+- ✅ **Edge functions** for API routes if needed
+- ✅ **Built-in analytics** and performance monitoring
+- ✅ **Custom domains** and SSL certificates
+- ✅ **Seamless GitHub integration**
+
+**Alternative Options**:
+- **Netlify** - Similar features, great for static sites
+- **Firebase Hosting** - Tight Firebase integration, CDN included
+- **AWS Amplify** - Enterprise-grade with advanced CI/CD
+
+### Backend Infrastructure
+
+**Database & Auth**: **Firebase**
+- ✅ **Firestore** for real-time data synchronization
+- ✅ **Firebase Auth** for user authentication
+- ✅ **Security rules** for data protection
+- ✅ **Offline support** built-in
+- ✅ **Automatic scaling** and global CDN
+
+### CI/CD Pipeline
+
+```yaml
+# Automated workflow:
+1. Push to GitHub → Trigger build
+2. Run code quality checks (Biome lint + format + TypeScript)
+3. Run tests (Vitest)
+4. Build optimized bundle (Vite)
+5. Deploy to Vercel preview environment
+6. Manual approval → Deploy to production
+```
+
+### Environment Configuration
+
+```bash
+# Production environments:
+- Development: Local with Firebase emulators
+- Staging: Vercel preview + Firebase dev project
+- Production: Vercel production + Firebase prod project
+```
+
+### Performance & Monitoring
+
+- **Vercel Analytics** for Core Web Vitals
+- **Firebase Performance** for backend metrics
+- **Sentry** for error tracking (planned)
+- **Lighthouse CI** for performance regression testing
+
+### Security Considerations
+
+- **Firebase Security Rules** for data access control
+- **Environment variables** for sensitive configuration
+- **HTTPS everywhere** with automatic SSL
+- **CSP headers** via Vercel configuration
+- **Firebase App Check** for API protection
+
+This infrastructure provides **enterprise-grade reliability** while remaining **cost-effective** for personal/learning projects, with seamless scaling as the application grows.

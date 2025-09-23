@@ -1,19 +1,15 @@
 import { z } from "zod"
 
 const envSchema = z.object({
-  VITE_FIREBASE_API_KEY: z.string().min(1),
-  VITE_FIREBASE_AUTH_DOMAIN: z.string().min(1),
-  VITE_FIREBASE_PROJECT_ID: z.string().min(1),
-  VITE_FIREBASE_STORAGE_BUCKET: z.string().min(1),
-  VITE_FIREBASE_MESSAGING_SENDER_ID: z.string().min(1),
-  VITE_FIREBASE_APP_ID: z.string().min(1),
+  VITE_FIREBASE_API_KEY: z.string().min(1, "Firebase API key is required"),
 })
 
 function validateEnv() {
   const result = envSchema.safeParse(import.meta.env)
 
   if (!result.success) {
-    console.error("❌ Invalid environment variables:", result.error.format())
+    console.error("❌ Invalid environment variables:")
+    console.error(result.error.issues)
     throw new Error("Invalid environment variables")
   }
 

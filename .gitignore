@@ -25,6 +25,7 @@ dist-ssr
 
 # Claude Code instructions
 CLAUDE.md
+.claude
 
 # Development roadmap
 ROADMAP.md

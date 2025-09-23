@@ -11,7 +11,7 @@
 
   /* Design tokens */
   --radius: 0.5rem;
-  --font-family-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-family-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* Light theme colors */
   --background: 0 0% 100%;
@@ -89,7 +89,9 @@
 
   body {
     @apply bg-background text-foreground font-sans;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 
   /* Focus styles for better accessibility */

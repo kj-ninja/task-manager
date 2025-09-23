@@ -1,8 +1,7 @@
+import AppRouter from "@pages/router"
+import { queryClient } from "@services/query-client"
 import { QueryClientProvider } from "@tanstack/react-query"
 import { Toaster } from "react-hot-toast"
-
-import AppRouter from "./pages/router"
-import { queryClient } from "./shared/api/query-client"
 
 function App() {
   // TODO: Add authentication state check

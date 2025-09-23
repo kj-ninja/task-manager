@@ -3,4 +3,4 @@
 
 export const authApi = {
   // Will implement: signIn, signUp, signOut, getCurrentUser
-};
+}

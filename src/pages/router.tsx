@@ -1,8 +1,7 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-
 import Auth from "@pages/auth"
 import Dashboard from "@pages/dashboard"
 import NotFound from "@pages/not-found"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
 interface AppRouterProps {
   isAuthenticated: boolean

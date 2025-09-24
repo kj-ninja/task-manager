@@ -52,22 +52,6 @@ This project serves as a comprehensive frontend development learning platform, c
 - **Biome** for fast linting, formatting, and import sorting
 - **Vitest** + **Testing Library** for component testing
 
-## 📁 Project Structure
-
-```
-src/
-├── pages/              # Route components
-├── features/           # Feature-based modules (co-located)
-│   ├── auth/          # Authentication
-│   ├── tasks/         # Task management
-│   └── dashboard/     # Dashboard overview
-├── shared/            # Reusable code
-│   ├── ui/           # Shared components
-│   ├── lib/          # Utilities
-│   └── api/          # API configuration
-└── config/           # Environment configuration
-```
-
 ## 🚦 Getting Started
 
 1. **Clone and install**:
@@ -145,17 +129,26 @@ This project is designed to demonstrate and practice:
 - ✅ **Offline support** built-in
 - ✅ **Automatic scaling** and global CDN
 
-### CI/CD Pipeline
+### CI/CD Pipeline (Frontend-Focused)
 
 ```yaml
-# Automated workflow:
+# Simplified workflow for frontend recruitment demonstration:
 1. Push to GitHub → Trigger build
-2. Run code quality checks (Biome lint + format + TypeScript)
-3. Run tests (Vitest)
-4. Build optimized bundle (Vite)
-5. Deploy to Vercel preview environment
-6. Manual approval → Deploy to production
+2. Code Quality Gates:
+   - `bun run check` - Biome linting & formatting
+   - `bun run build` - TypeScript compilation + Vite build
+   - `bun test` - Unit tests (Vitest)
+   - `tsc --noEmit` - Type checking without emit
+3. Deploy to Vercel preview environment
+4. Manual approval → Deploy to production
 ```
+
+**Focus Areas for Interview Preparation:**
+- Clean, maintainable code (automated formatting)
+- TypeScript proficiency (strict type checking)
+- Testing knowledge (unit/component tests)
+- Build process understanding (Vite bundling)
+- Modern tooling familiarity (Biome vs ESLint/Prettier)
 
 ### Environment Configuration
 

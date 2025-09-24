@@ -4,8 +4,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@services/*": ["./src/services/*"],
-      "@shared/*": ["src/shared/*"],
-      "@utils/*": ["src/shared/utils/*"],
+      "@utils/*": ["./src/shared/utils/*"],
       "@config/*": ["./src/config/*"],
       "@features/*": ["./src/features/*"],
       "@pages/*": ["./src/pages/*"],
@@ -34,5 +33,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
 }

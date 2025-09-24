@@ -50,9 +50,7 @@ const envSchema = z.object({
     .optional(),
 
   // Environment-specific settings
-  VITE_APP_ENV: z
-    .enum(["development", "staging", "production"])
-    .default("development"),
+  VITE_APP_ENV: z.enum(["development", "staging", "production"]).default("development"),
 
   // Feature flags - useful for gradual rollouts
   VITE_ENABLE_ANALYTICS: z

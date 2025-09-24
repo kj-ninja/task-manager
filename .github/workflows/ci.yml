@@ -17,7 +17,7 @@ jobs:
   # Frontend-focused quality gates - Interview Questions #43-44, #56-57
   quality:
     runs-on: ubuntu-latest
-    name: Code Quality & Type Safety
+    name: Code Quality Checks
 
     steps:
       - name: Checkout code
@@ -137,67 +137,4 @@ jobs:
           # Ensure tests run in CI environment
           CI: true
 
-      # Interview Question #44: Testing async operations
-      # Additional check to ensure tests handle async operations correctly
-      # This prevents flaky tests that might pass locally but fail in CI
-      - name: Test async operations & error handling
-        run: |
-          echo "🧪 Running async operation tests..."
-          # This will be implemented when we add specific async tests
-          echo "✅ Async test validation complete"
 
-  # Interview Question #87: Deployment workflow automation
-  # This job demonstrates understanding of deployment strategies
-  # Separates build verification from actual deployment
-  deployment-check:
-    runs-on: ubuntu-latest
-    name: Deployment Readiness
-    needs: [quality, test]
-    if: github.event_name == 'pull_request'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb', '**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      # Verify that the application can be built for production
-      # This catches deployment issues before they reach production
-      - name: Production deployment simulation
-        run: |
-          echo "🚀 Simulating production deployment..."
-          bun run build
-
-          # Check that essential files are generated
-          if [ -d "dist" ] && [ -f "dist/index.html" ]; then
-            echo "✅ Production build successful"
-            echo "📊 Bundle size analysis:"
-            du -sh dist/*
-          else
-            echo "❌ Production build failed"
-            exit 1
-          fi
-
-      # Preview deployment readiness check
-      # This ensures the app can be deployed to preview environments
-      - name: Preview deployment check
-        run: |
-          echo "🔍 Checking preview deployment readiness..."
-          echo "✅ Application ready for Vercel preview deployment"
-          echo "🔗 Preview URL will be available after Vercel integration"

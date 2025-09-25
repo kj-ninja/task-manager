@@ -1,12 +1,12 @@
 // Interview Question #47: React Hook Form + Zod integration patterns
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 
 import { Button } from "@components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@components/ui/form";
 import { Input } from "@components/ui/input";
-import { signUpSchema, type SignUpFormData } from "@features/auth/schemas";
+import { type SignUpFormData, signUpSchema } from "@features/auth/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface SignUpFormProps {
   onSubmit: (data: SignUpFormData) => Promise<void>;
@@ -51,11 +51,7 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
             <FormItem>
               <FormLabel>Display Name (Optional)</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter your display name"
-                  disabled={isFormLoading}
-                  {...field}
-                />
+                <Input placeholder="Enter your display name" disabled={isFormLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -69,12 +65,7 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  disabled={isFormLoading}
-                  {...field}
-                />
+                <Input type="email" placeholder="Enter your email" disabled={isFormLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,12 +79,7 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Create a password"
-                  disabled={isFormLoading}
-                  {...field}
-                />
+                <Input type="password" placeholder="Create a password" disabled={isFormLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -107,23 +93,14 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Confirm your password"
-                  disabled={isFormLoading}
-                  {...field}
-                />
+                <Input type="password" placeholder="Confirm your password" disabled={isFormLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isFormLoading}
-        >
+        <Button type="submit" className="w-full" disabled={isFormLoading}>
           {isFormLoading ? "Creating Account..." : "Create Account"}
         </Button>
       </form>

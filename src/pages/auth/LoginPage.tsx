@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
-
 import { AuthLayout } from "@features/auth/components/AuthLayout";
 import { LoginForm } from "@features/auth/components/LoginForm";
 import type { LoginFormData } from "@features/auth/schemas";
+import { Link } from "react-router-dom";
 
 export function LoginPage() {
   // Temporary handler - we'll connect to Firebase next

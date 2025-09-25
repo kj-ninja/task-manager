@@ -3,11 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@comp
 
 export function DashboardPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Task Manager Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome to your task management workspace</p>
+    <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8 text-center">
+          <h1 className="font-bold text-3xl text-gray-900">Task Manager Dashboard</h1>
+          <p className="mt-2 text-gray-600">Welcome to your task management workspace</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -17,8 +17,8 @@ export function DashboardPage() {
               <CardDescription>Manage your daily tasks</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-blue-600">0</p>
-              <p className="text-sm text-gray-600">tasks pending</p>
+              <p className="font-bold text-2xl text-blue-600">0</p>
+              <p className="text-gray-600 text-sm">tasks pending</p>
             </CardContent>
           </Card>
 
@@ -28,8 +28,8 @@ export function DashboardPage() {
               <CardDescription>Tasks you've finished</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-green-600">0</p>
-              <p className="text-sm text-gray-600">tasks completed</p>
+              <p className="font-bold text-2xl text-green-600">0</p>
+              <p className="text-gray-600 text-sm">tasks completed</p>
             </CardContent>
           </Card>
 

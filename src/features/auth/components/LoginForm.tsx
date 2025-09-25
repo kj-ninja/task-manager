@@ -1,12 +1,12 @@
 // Interview Question #47: React Hook Form + Zod integration for login
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 
 import { Button } from "@components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@components/ui/form";
 import { Input } from "@components/ui/input";
-import { loginSchema, type LoginFormData } from "@features/auth/schemas";
+import { type LoginFormData, loginSchema } from "@features/auth/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => Promise<void>;
@@ -47,12 +47,7 @@ export function LoginForm({ onSubmit, isLoading = false }: LoginFormProps) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  disabled={isFormLoading}
-                  {...field}
-                />
+                <Input type="email" placeholder="Enter your email" disabled={isFormLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,23 +61,14 @@ export function LoginForm({ onSubmit, isLoading = false }: LoginFormProps) {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Enter your password"
-                  disabled={isFormLoading}
-                  {...field}
-                />
+                <Input type="password" placeholder="Enter your password" disabled={isFormLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isFormLoading}
-        >
+        <Button type="submit" className="w-full" disabled={isFormLoading}>
           {isFormLoading ? "Signing In..." : "Sign In"}
         </Button>
       </form>

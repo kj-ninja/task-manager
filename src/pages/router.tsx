@@ -1,7 +1,7 @@
 import { DashboardPage } from "@pages/DashboardPage";
-import { LoginPage } from "@pages/LoginPage";
+import { LoginPage } from "@/pages/auth/LoginPage";
 import NotFound from "@pages/not-found";
-import { SignUpPage } from "@pages/SignUpPage";
+import { SignUpPage } from "@/pages/auth/SignUpPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 interface AppRouterProps {

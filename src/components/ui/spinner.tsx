@@ -1,5 +1,3 @@
-// Reusable spinner component
-
 import { cn } from "@lib/utils";
 
 interface SpinnerProps {

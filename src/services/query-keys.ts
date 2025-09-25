@@ -3,4 +3,4 @@ export const queryKeys = {
   auth: {
     user: () => ["auth", "user"] as const,
   },
-} as const
+} as const;

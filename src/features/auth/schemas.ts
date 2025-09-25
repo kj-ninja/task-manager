@@ -1,26 +1,15 @@
 // Interview Question #47: Simple, practical Zod validation schemas
 import { z } from "zod";
 
-// Login form - just email and password
 export const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email("Please enter a valid email address"),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
 });
 
-// Sign up form - email, password, confirm password, optional display name
 export const signUpSchema = z
   .object({
-    email: z
-      .string()
-      .min(1, "Email is required")
-      .email("Please enter a valid email address"),
-    password: z
-      .string()
-      .min(1, "Password is required")
-      .min(6, "Password must be at least 6 characters long"),
+    email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
+    password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters long"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
     displayName: z.string().optional(),
   })

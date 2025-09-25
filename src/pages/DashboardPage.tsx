@@ -1,6 +1,5 @@
 import { Button } from "@components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
-import { AuthGuard } from "@features/auth/components/AuthGuard";
 import { useAuth, useAuthActions } from "@features/auth/hooks";
 
 export function DashboardPage() {
@@ -8,13 +7,12 @@ export function DashboardPage() {
   const { signOut } = useAuthActions();
 
   return (
-    <AuthGuard>
-      <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="mb-8 text-center">
-            <h1 className="font-bold text-3xl text-gray-900">Task Manager Dashboard</h1>
-            <p className="mt-2 text-gray-600">Welcome back, {user?.displayName || user?.email}!</p>
-          </div>
+    <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8 text-center">
+          <h1 className="font-bold text-3xl text-gray-900">Task Manager Dashboard</h1>
+          <p className="mt-2 text-gray-600">Welcome back, {user?.displayName || user?.email}!</p>
+        </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card>
@@ -57,8 +55,7 @@ export function DashboardPage() {
             </CardContent>
           </Card>
         </div>
-        </div>
       </div>
-    </AuthGuard>
+    </div>
   );
 }

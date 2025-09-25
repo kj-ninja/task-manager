@@ -1,17 +1,25 @@
-// Interview Question #38: Component composition patterns for reusable layouts
+// Generic centered card layout - reusable across different features
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
 
-interface AuthLayoutProps {
+interface CenteredCardLayoutProps {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  maxWidth?: "sm" | "md" | "lg" | "xl";
 }
 
-export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProps) {
+export function CenteredCardLayout({ title, subtitle, children, footer, maxWidth = "md" }: CenteredCardLayoutProps) {
+  const widthClasses = {
+    sm: "max-w-sm",
+    md: "max-w-md",
+    lg: "max-w-lg",
+    xl: "max-w-xl",
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-6">
+      <div className={`w-full ${widthClasses[maxWidth]} space-y-6`}>
         <Card className="shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="font-bold text-2xl text-gray-900">{title}</CardTitle>

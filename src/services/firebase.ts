@@ -1,23 +1,20 @@
-import { env } from "@config/env"
-import { initializeApp } from "firebase/app"
-import { getAuth } from "firebase/auth"
-import { getFirestore } from "firebase/firestore"
+// Interview Question #53: Environment variable security and Firebase configuration
 
-const firebaseConfig = {
-  apiKey: env.VITE_FIREBASE_API_KEY,
-  // TODO: Add other Firebase config when needed
-  // authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
-  // projectId: env.VITE_FIREBASE_PROJECT_ID,
-  // storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET,
-  // messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  // appId: env.VITE_FIREBASE_APP_ID,
-}
+import { firebaseConfig } from "@config/env";
+import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
-// Initialize Firebase
+// Initialize Firebase app with environment-validated configuration
 const app = initializeApp(firebaseConfig)
 
-// Initialize Firebase services
+// Interview Question #89: Firebase service initialization patterns
+// Initialize Firebase services - these are singletons that can be imported anywhere
 export const auth = getAuth(app)
 export const db = getFirestore(app)
+
+// Conditional analytics initialization - only when measurement ID is present
+export const analytics = firebaseConfig.measurementId ? getAnalytics(app) : null
 
 export default app

@@ -8,5 +8,5 @@ export default function Auth() {
         {/* Auth form */}
       </div>
     </div>
-  )
+  );
 }

@@ -6,5 +6,5 @@ export default function NotFound() {
         <p className="mt-4 text-gray-600 text-xl">Page not found</p>
       </div>
     </div>
-  )
+  );
 }

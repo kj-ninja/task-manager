@@ -1,17 +1,45 @@
 // Interview Question #43: Testing async functions and mocking external services with Bun
 import { beforeEach, describe, expect, mock, test } from "bun:test";
 
-// Interview Question #89: Bun's native mocking system
-const mockAuth: { currentUser: any } = {
+import type { AuthError, User } from "./types";
+
+// Interview Question #13: Creating precise mock types instead of `any`
+type MockFirebaseUser = {
+  uid: string;
+  email: string;
+  displayName: string | null;
+  photoURL: string | null;
+  emailVerified: boolean;
+};
+
+// Interview Question #89: Type-safe mocking system
+const mockAuth: { currentUser: MockFirebaseUser | null } = {
   currentUser: null,
 };
 
-const mockFirebaseUser = {
+// Interview Question #43: Using real types in tests ensures type safety
+const mockFirebaseUser: MockFirebaseUser = {
   uid: "test-uid",
   email: "test@example.com",
   displayName: "Test User",
   photoURL: "https://example.com/photo.jpg",
   emailVerified: true,
+};
+
+// Our expected User object after transformation
+const expectedUser: User = {
+  id: "test-uid",
+  email: "test@example.com",
+  displayName: "Test User",
+  photoURL: "https://example.com/photo.jpg",
+  emailVerified: true,
+};
+
+// Expected error response after our transformation
+const expectedAuthError: AuthError = {
+  code: "auth/invalid-credential",
+  message: "Invalid email or password",
+  type: "auth",
 };
 
 const mockSignInWithEmailAndPassword = mock(() => Promise.resolve({ user: mockFirebaseUser }));
@@ -59,13 +87,7 @@ describe("Auth API", () => {
 
     expect(mockSignInWithEmailAndPassword).toHaveBeenCalledWith(mockAuth, credentials.email, credentials.password);
 
-    expect(result).toEqual({
-      id: mockFirebaseUser.uid,
-      email: mockFirebaseUser.email,
-      displayName: mockFirebaseUser.displayName,
-      photoURL: mockFirebaseUser.photoURL,
-      emailVerified: mockFirebaseUser.emailVerified,
-    });
+    expect(result).toEqual(expectedUser);
   });
 
   test("should handle sign in error", async () => {
@@ -86,12 +108,8 @@ describe("Auth API", () => {
     try {
       await authApi.signInWithEmail(credentials);
       expect(false).toBe(true); // Should not reach here
-    } catch (error: any) {
-      expect(error).toEqual({
-        code: "auth/invalid-credential",
-        message: "Invalid email or password",
-        type: "auth",
-      });
+    } catch (error) {
+      expect(error).toEqual(expectedAuthError);
     }
   });
 
@@ -119,13 +137,7 @@ describe("Auth API", () => {
     const result = await authApi.signInWithGoogle();
 
     expect(mockSignInWithPopup).toHaveBeenCalled();
-    expect(result).toEqual({
-      id: mockFirebaseUser.uid,
-      email: mockFirebaseUser.email,
-      displayName: mockFirebaseUser.displayName,
-      photoURL: mockFirebaseUser.photoURL,
-      emailVerified: mockFirebaseUser.emailVerified,
-    });
+    expect(result).toEqual(expectedUser);
   });
 
   test("should sign out successfully", async () => {
@@ -143,13 +155,7 @@ describe("Auth API", () => {
 
     const result = authApi.getCurrentUser();
 
-    expect(result).toEqual({
-      id: mockFirebaseUser.uid,
-      email: mockFirebaseUser.email,
-      displayName: mockFirebaseUser.displayName,
-      photoURL: mockFirebaseUser.photoURL,
-      emailVerified: mockFirebaseUser.emailVerified,
-    });
+    expect(result).toEqual(expectedUser);
   });
 
   test("should return null when no user is signed in", async () => {
@@ -160,5 +166,32 @@ describe("Auth API", () => {
     const result = authApi.getCurrentUser();
 
     expect(result).toBeNull();
+  });
+
+  test("should handle user without optional fields", async () => {
+    // Interview Question #15: Testing edge cases with our real User type
+    const { authApi } = await import("./api");
+
+    const minimalFirebaseUser: MockFirebaseUser = {
+      uid: "minimal-user",
+      email: "minimal@example.com",
+      displayName: null, // Test null handling
+      photoURL: null, // Test null handling
+      emailVerified: false,
+    };
+
+    const expectedMinimalUser: User = {
+      id: "minimal-user",
+      email: "minimal@example.com",
+      displayName: undefined, // Our API converts null to undefined
+      photoURL: undefined, // Our API converts null to undefined
+      emailVerified: false,
+    };
+
+    mockAuth.currentUser = minimalFirebaseUser;
+
+    const result = authApi.getCurrentUser();
+
+    expect(result).toEqual(expectedMinimalUser);
   });
 });

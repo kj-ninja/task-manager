@@ -1,5 +1,4 @@
 // Interview Question #15: Zustand state management patterns
-
 import { auth } from "@services/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { create } from "zustand";
@@ -9,7 +8,6 @@ import type { AuthError, AuthState, SignInCredentials, SignUpCredentials, User }
 
 // Interview Question #21: State management with actions and loading states
 interface AuthStore extends AuthState {
-  // Actions
   signIn: (credentials: SignInCredentials) => Promise<void>;
   signUp: (credentials: SignUpCredentials) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
@@ -18,8 +16,7 @@ interface AuthStore extends AuthState {
   clearError: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set, get) => ({
-  // Initial state
+export const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   loading: {
     signIn: false,
@@ -120,7 +117,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   // Interview Question #89: Firebase auth state persistence
   initialize: () => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         const user: User = {
           id: firebaseUser.uid,
@@ -143,9 +140,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         }));
       }
     });
-
-    // Store unsubscribe function for cleanup
-    (get as any)._unsubscribe = unsubscribe;
   },
 
   clearError: () => {

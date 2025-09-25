@@ -1,11 +1,11 @@
 import { AuthGuard } from "@components/guards/AuthGuard";
 import { GuestGuard } from "@components/guards/GuestGuard";
-import { DashboardPage } from "@pages/DashboardPage";
 import NotFound from "@pages/not-found";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { LoginPage } from "@/pages/auth/LoginPage";
 import { SignUpPage } from "@/pages/auth/SignUpPage";
+import { DashboardPage } from "@/pages/home/DashboardPage";
 
 export default function AppRouter() {
   return (

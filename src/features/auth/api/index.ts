@@ -11,7 +11,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 
-import type { AuthError, SignInCredentials, SignUpCredentials, User } from "./types";
+import type { AuthError, SignInCredentials, SignUpCredentials, User } from "../types";
 
 // Interview Question #49: Error handling and user experience
 function mapFirebaseError(error: unknown): AuthError {

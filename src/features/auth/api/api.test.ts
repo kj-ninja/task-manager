@@ -1,7 +1,7 @@
 // Interview Question #43: Testing async functions and mocking external services with Bun
 import { beforeEach, describe, expect, mock, test } from "bun:test";
 
-import type { AuthError, User } from "./types";
+import type { AuthError, User } from "../types";
 
 // Interview Question #13: Creating precise mock types instead of `any`
 type MockFirebaseUser = {
@@ -76,7 +76,7 @@ describe("Auth API", () => {
 
   test("should sign in with email successfully", async () => {
     // Dynamic import after mocking
-    const { authApi } = await import("./api");
+    const { authApi } = await import(".");
 
     const credentials = {
       email: "test@example.com",
@@ -91,7 +91,7 @@ describe("Auth API", () => {
   });
 
   test("should handle sign in error", async () => {
-    const { authApi } = await import("./api");
+    const { authApi } = await import(".");
 
     const firebaseError = {
       code: "auth/invalid-credential",
@@ -114,7 +114,7 @@ describe("Auth API", () => {
   });
 
   test("should sign up with email successfully", async () => {
-    const { authApi } = await import("./api");
+    const { authApi } = await import(".");
 
     const credentials = {
       email: "new@example.com",
@@ -132,7 +132,7 @@ describe("Auth API", () => {
   });
 
   test("should sign in with Google successfully", async () => {
-    const { authApi } = await import("./api");
+    const { authApi } = await import(".");
 
     const result = await authApi.signInWithGoogle();
 
@@ -141,7 +141,7 @@ describe("Auth API", () => {
   });
 
   test("should sign out successfully", async () => {
-    const { authApi } = await import("./api");
+    const { authApi } = await import(".");
 
     await authApi.signOut();
 
@@ -149,7 +149,7 @@ describe("Auth API", () => {
   });
 
   test("should return current user when signed in", async () => {
-    const { authApi } = await import("./api");
+    const { authApi } = await import(".");
 
     mockAuth.currentUser = mockFirebaseUser;
 
@@ -159,7 +159,7 @@ describe("Auth API", () => {
   });
 
   test("should return null when no user is signed in", async () => {
-    const { authApi } = await import("./api");
+    const { authApi } = await import(".");
 
     mockAuth.currentUser = null;
 
@@ -170,7 +170,7 @@ describe("Auth API", () => {
 
   test("should handle user without optional fields", async () => {
     // Interview Question #15: Testing edge cases with our real User type
-    const { authApi } = await import("./api");
+    const { authApi } = await import(".");
 
     const minimalFirebaseUser: MockFirebaseUser = {
       uid: "minimal-user",

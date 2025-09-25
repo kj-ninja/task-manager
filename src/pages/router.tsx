@@ -1,19 +1,27 @@
-import Auth from "@pages/auth";
-import Dashboard from "@pages/dashboard";
+import { AuthGuard } from "@components/guards/AuthGuard";
+import { GuestGuard } from "@components/guards/GuestGuard";
 import NotFound from "@pages/not-found";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-interface AppRouterProps {
-  isAuthenticated: boolean;
-}
+import { LoginPage } from "@/pages/auth/LoginPage";
+import { SignUpPage } from "@/pages/auth/SignUpPage";
+import { DashboardPage } from "@/pages/home/DashboardPage";
 
-export default function AppRouter({ isAuthenticated }: AppRouterProps) {
+export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/auth" />} />
-        <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/auth" />} />
-        <Route path="/auth" element={!isAuthenticated ? <Auth /> : <Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+        <Route element={<AuthGuard />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+        </Route>
+
+        <Route element={<GuestGuard />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

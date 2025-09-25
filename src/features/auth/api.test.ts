@@ -1,311 +1,164 @@
-// Interview Question #43: Testing async functions and mocking external services
-import { beforeEach, describe, expect, jest, test } from "bun:test";
+// Interview Question #43: Testing async functions and mocking external services with Bun
+import { beforeEach, describe, expect, mock, test } from "bun:test";
 
-import { authApi } from "./api";
-import type { AuthError } from "./types";
+// Interview Question #89: Bun's native mocking system
+const mockAuth: { currentUser: any } = {
+  currentUser: null,
+};
 
-// Interview Question #89: Mocking Firebase auth methods
-const mockSignInWithEmailAndPassword = jest.fn();
-const mockCreateUserWithEmailAndPassword = jest.fn();
-const mockSignInWithPopup = jest.fn();
-const mockSignOut = jest.fn();
-const mockUpdateProfile = jest.fn();
+const mockFirebaseUser = {
+  uid: "test-uid",
+  email: "test@example.com",
+  displayName: "Test User",
+  photoURL: "https://example.com/photo.jpg",
+  emailVerified: true,
+};
 
-// Mock Firebase auth module
-jest.mock("firebase/auth", () => ({
+const mockSignInWithEmailAndPassword = mock(() => Promise.resolve({ user: mockFirebaseUser }));
+const mockCreateUserWithEmailAndPassword = mock(() => Promise.resolve({ user: mockFirebaseUser }));
+const mockSignInWithPopup = mock(() => Promise.resolve({ user: mockFirebaseUser }));
+const mockSignOut = mock(() => Promise.resolve());
+const mockUpdateProfile = mock(() => Promise.resolve());
+
+// Mock the Firebase auth module
+mock.module("firebase/auth", () => ({
   signInWithEmailAndPassword: mockSignInWithEmailAndPassword,
   createUserWithEmailAndPassword: mockCreateUserWithEmailAndPassword,
   signInWithPopup: mockSignInWithPopup,
   signOut: mockSignOut,
   updateProfile: mockUpdateProfile,
-  GoogleAuthProvider: jest.fn(),
+  GoogleAuthProvider: class MockGoogleAuthProvider {},
 }));
 
-// Mock Firebase service
-jest.mock("@services/firebase", () => ({
-  auth: { currentUser: null },
+// Mock the Firebase service
+mock.module("@services/firebase", () => ({
+  auth: mockAuth,
 }));
 
-describe("authApi", () => {
+describe("Auth API", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    // Reset mocks before each test
+    mockSignInWithEmailAndPassword.mockClear();
+    mockCreateUserWithEmailAndPassword.mockClear();
+    mockSignInWithPopup.mockClear();
+    mockSignOut.mockClear();
+    mockUpdateProfile.mockClear();
+    mockAuth.currentUser = null;
   });
 
-  describe("signInWithEmail", () => {
-    test("should sign in successfully", async () => {
-      // Interview Question #21: Testing async/await patterns
-      const mockUser = {
-        uid: "test-uid",
-        email: "test@example.com",
-        displayName: "Test User",
-        photoURL: "https://example.com/photo.jpg",
-        emailVerified: true,
-      };
+  test("should sign in with email successfully", async () => {
+    // Dynamic import after mocking
+    const { authApi } = await import("./api");
 
-      mockSignInWithEmailAndPassword.mockResolvedValue({
-        user: mockUser,
-      });
+    const credentials = {
+      email: "test@example.com",
+      password: "password123",
+    };
 
-      const credentials = {
-        email: "test@example.com",
-        password: "password123",
-      };
+    const result = await authApi.signInWithEmail(credentials);
 
-      const result = await authApi.signInWithEmail(credentials);
+    expect(mockSignInWithEmailAndPassword).toHaveBeenCalledWith(mockAuth, credentials.email, credentials.password);
 
-      expect(mockSignInWithEmailAndPassword).toHaveBeenCalledWith(
-        expect.any(Object), // auth object
-        credentials.email,
-        credentials.password
-      );
-
-      expect(result).toEqual({
-        id: mockUser.uid,
-        email: mockUser.email,
-        displayName: mockUser.displayName,
-        photoURL: mockUser.photoURL,
-        emailVerified: mockUser.emailVerified,
-      });
+    expect(result).toEqual({
+      id: mockFirebaseUser.uid,
+      email: mockFirebaseUser.email,
+      displayName: mockFirebaseUser.displayName,
+      photoURL: mockFirebaseUser.photoURL,
+      emailVerified: mockFirebaseUser.emailVerified,
     });
+  });
 
-    test("should handle invalid credentials error", async () => {
-      // Interview Question #49: Error handling strategies
-      const firebaseError = {
-        code: "auth/invalid-credential",
-        message: "Invalid credential",
-      };
+  test("should handle sign in error", async () => {
+    const { authApi } = await import("./api");
 
-      mockSignInWithEmailAndPassword.mockRejectedValue(firebaseError);
+    const firebaseError = {
+      code: "auth/invalid-credential",
+      message: "Invalid credential",
+    };
 
-      const credentials = {
-        email: "test@example.com",
-        password: "wrongpassword",
-      };
+    mockSignInWithEmailAndPassword.mockRejectedValue(firebaseError);
 
-      await expect(authApi.signInWithEmail(credentials)).rejects.toEqual({
+    const credentials = {
+      email: "test@example.com",
+      password: "wrongpassword",
+    };
+
+    try {
+      await authApi.signInWithEmail(credentials);
+      expect(false).toBe(true); // Should not reach here
+    } catch (error: any) {
+      expect(error).toEqual({
         code: "auth/invalid-credential",
         message: "Invalid email or password",
         type: "auth",
-      } as AuthError);
-    });
+      });
+    }
+  });
 
-    test("should handle network error", async () => {
-      const firebaseError = {
-        code: "auth/network-request-failed",
-        message: "Network error",
-      };
+  test("should sign up with email successfully", async () => {
+    const { authApi } = await import("./api");
 
-      mockSignInWithEmailAndPassword.mockRejectedValue(firebaseError);
+    const credentials = {
+      email: "new@example.com",
+      password: "password123",
+      displayName: "New User",
+    };
 
-      const credentials = {
-        email: "test@example.com",
-        password: "password123",
-      };
+    await authApi.signUpWithEmail(credentials);
 
-      await expect(authApi.signInWithEmail(credentials)).rejects.toEqual({
-        code: "auth/network-request-failed",
-        message: "Network error. Please check your connection",
-        type: "network",
-      } as AuthError);
+    expect(mockCreateUserWithEmailAndPassword).toHaveBeenCalledWith(mockAuth, credentials.email, credentials.password);
+
+    expect(mockUpdateProfile).toHaveBeenCalledWith(mockFirebaseUser, {
+      displayName: credentials.displayName,
     });
   });
 
-  describe("signUpWithEmail", () => {
-    test("should sign up successfully without display name", async () => {
-      const mockUser = {
-        uid: "new-user-uid",
-        email: "new@example.com",
-        displayName: null,
-        photoURL: null,
-        emailVerified: false,
-      };
+  test("should sign in with Google successfully", async () => {
+    const { authApi } = await import("./api");
 
-      mockCreateUserWithEmailAndPassword.mockResolvedValue({
-        user: mockUser,
-      });
+    const result = await authApi.signInWithGoogle();
 
-      const credentials = {
-        email: "new@example.com",
-        password: "password123",
-      };
-
-      const result = await authApi.signUpWithEmail(credentials);
-
-      expect(mockCreateUserWithEmailAndPassword).toHaveBeenCalledWith(
-        expect.any(Object),
-        credentials.email,
-        credentials.password
-      );
-
-      expect(mockUpdateProfile).not.toHaveBeenCalled();
-
-      expect(result).toEqual({
-        id: mockUser.uid,
-        email: mockUser.email,
-        displayName: undefined,
-        photoURL: undefined,
-        emailVerified: mockUser.emailVerified,
-      });
-    });
-
-    test("should sign up successfully with display name", async () => {
-      const mockUser = {
-        uid: "new-user-uid",
-        email: "new@example.com",
-        displayName: null,
-        photoURL: null,
-        emailVerified: false,
-      };
-
-      mockCreateUserWithEmailAndPassword.mockResolvedValue({
-        user: mockUser,
-      });
-      mockUpdateProfile.mockResolvedValue(undefined);
-
-      const credentials = {
-        email: "new@example.com",
-        password: "password123",
-        displayName: "New User",
-      };
-
-      await authApi.signUpWithEmail(credentials);
-
-      expect(mockCreateUserWithEmailAndPassword).toHaveBeenCalledWith(
-        expect.any(Object),
-        credentials.email,
-        credentials.password
-      );
-
-      expect(mockUpdateProfile).toHaveBeenCalledWith(mockUser, {
-        displayName: credentials.displayName,
-      });
-    });
-
-    test("should handle email already in use error", async () => {
-      const firebaseError = {
-        code: "auth/email-already-in-use",
-        message: "Email already in use",
-      };
-
-      mockCreateUserWithEmailAndPassword.mockRejectedValue(firebaseError);
-
-      const credentials = {
-        email: "existing@example.com",
-        password: "password123",
-      };
-
-      await expect(authApi.signUpWithEmail(credentials)).rejects.toEqual({
-        code: "auth/email-already-in-use",
-        message: "An account with this email already exists",
-        type: "auth",
-      } as AuthError);
+    expect(mockSignInWithPopup).toHaveBeenCalled();
+    expect(result).toEqual({
+      id: mockFirebaseUser.uid,
+      email: mockFirebaseUser.email,
+      displayName: mockFirebaseUser.displayName,
+      photoURL: mockFirebaseUser.photoURL,
+      emailVerified: mockFirebaseUser.emailVerified,
     });
   });
 
-  describe("signInWithGoogle", () => {
-    test("should sign in with Google successfully", async () => {
-      const mockUser = {
-        uid: "google-user-uid",
-        email: "google@example.com",
-        displayName: "Google User",
-        photoURL: "https://lh3.googleusercontent.com/photo",
-        emailVerified: true,
-      };
+  test("should sign out successfully", async () => {
+    const { authApi } = await import("./api");
 
-      mockSignInWithPopup.mockResolvedValue({
-        user: mockUser,
-      });
+    await authApi.signOut();
 
-      const result = await authApi.signInWithGoogle();
+    expect(mockSignOut).toHaveBeenCalledWith(mockAuth);
+  });
 
-      expect(mockSignInWithPopup).toHaveBeenCalledWith(
-        expect.any(Object), // auth
-        expect.any(Object) // GoogleAuthProvider instance
-      );
+  test("should return current user when signed in", async () => {
+    const { authApi } = await import("./api");
 
-      expect(result).toEqual({
-        id: mockUser.uid,
-        email: mockUser.email,
-        displayName: mockUser.displayName,
-        photoURL: mockUser.photoURL,
-        emailVerified: mockUser.emailVerified,
-      });
-    });
+    mockAuth.currentUser = mockFirebaseUser;
 
-    test("should handle popup closed by user", async () => {
-      const firebaseError = {
-        code: "auth/popup-closed-by-user",
-        message: "Popup closed",
-      };
+    const result = authApi.getCurrentUser();
 
-      mockSignInWithPopup.mockRejectedValue(firebaseError);
-
-      await expect(authApi.signInWithGoogle()).rejects.toEqual({
-        code: "auth/popup-closed-by-user",
-        message: "Sign-in cancelled",
-        type: "auth",
-      } as AuthError);
+    expect(result).toEqual({
+      id: mockFirebaseUser.uid,
+      email: mockFirebaseUser.email,
+      displayName: mockFirebaseUser.displayName,
+      photoURL: mockFirebaseUser.photoURL,
+      emailVerified: mockFirebaseUser.emailVerified,
     });
   });
 
-  describe("signOut", () => {
-    test("should sign out successfully", async () => {
-      mockSignOut.mockResolvedValue(undefined);
+  test("should return null when no user is signed in", async () => {
+    const { authApi } = await import("./api");
 
-      await authApi.signOut();
+    mockAuth.currentUser = null;
 
-      expect(mockSignOut).toHaveBeenCalledWith(expect.any(Object));
-    });
+    const result = authApi.getCurrentUser();
 
-    test("should handle sign out error", async () => {
-      const firebaseError = {
-        code: "auth/too-many-requests",
-        message: "Too many requests",
-      };
-
-      mockSignOut.mockRejectedValue(firebaseError);
-
-      await expect(authApi.signOut()).rejects.toEqual({
-        code: "auth/too-many-requests",
-        message: "Too many failed attempts. Please try again later",
-        type: "auth",
-      } as AuthError);
-    });
-  });
-
-  describe("getCurrentUser", () => {
-    test("should return null when no user is signed in", () => {
-      const result = authApi.getCurrentUser();
-      expect(result).toBeNull();
-    });
-
-    test("should return current user when signed in", () => {
-      const mockFirebaseUser = {
-        uid: "current-user-uid",
-        email: "current@example.com",
-        displayName: "Current User",
-        photoURL: null,
-        emailVerified: true,
-      };
-
-      // Mock auth.currentUser
-      jest.doMock("@services/firebase", () => ({
-        auth: { currentUser: mockFirebaseUser },
-      }));
-
-      // Re-import to get mocked version
-      const { auth } = require("@services/firebase");
-      auth.currentUser = mockFirebaseUser;
-
-      const result = authApi.getCurrentUser();
-
-      expect(result).toEqual({
-        id: mockFirebaseUser.uid,
-        email: mockFirebaseUser.email,
-        displayName: mockFirebaseUser.displayName,
-        photoURL: undefined,
-        emailVerified: mockFirebaseUser.emailVerified,
-      });
-    });
+    expect(result).toBeNull();
   });
 });

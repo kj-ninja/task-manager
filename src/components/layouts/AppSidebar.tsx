@@ -44,10 +44,8 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="flex h-16 items-center border-b border-sidebar-border px-6">
-        <h1 className="text-lg font-semibold text-sidebar-foreground">
-          Task Manager
-        </h1>
+      <SidebarHeader className="flex h-16 items-center justify-center border-sidebar-border border-b px-6">
+        <h1 className="font-semibold text-lg text-sidebar-foreground">Task Manager</h1>
       </SidebarHeader>
 
       <SidebarContent>
@@ -57,10 +55,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={location.pathname === item.url}
-                  >
+                  <SidebarMenuButton asChild isActive={location.pathname === item.url}>
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -72,7 +67,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Future sections for rich features */}
         <SidebarGroup>
           <SidebarGroupLabel>Projects</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -88,7 +82,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border p-4">
+      <SidebarFooter className="border-sidebar-border border-t p-4">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>

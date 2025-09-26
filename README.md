@@ -49,8 +49,8 @@ This project serves as a comprehensive frontend development learning platform, c
 
 ### Development
 - **TypeScript** with strict configuration
-- **Biome** for fast linting, formatting, and import sorting
-- **Vitest** + **Testing Library** for component testing
+- **Biome** for fast linting, formatting, and import sorting (2-100x faster than ESLint+Prettier)
+- **Bun** for package management and built-in testing (Jest-compatible)
 
 ## 🚦 Getting Started
 
@@ -58,7 +58,7 @@ This project serves as a comprehensive frontend development learning platform, c
    ```bash
    git clone <repo-url>
    cd task-manager
-   npm install
+   bun install
    ```
 
 2. **Environment setup**:
@@ -69,17 +69,18 @@ This project serves as a comprehensive frontend development learning platform, c
 
 3. **Development**:
    ```bash
-   npm run dev
+   bun run dev
    ```
 
 ## 📝 Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run format` - Format code with Biome
-- `npm run check` - Run all code quality checks
+- `bun run dev` - Start development server with hot reload
+- `bun run build` - Build for production (TypeScript compilation + Vite build)
+- `bun run preview` - Preview production build locally
+- `bun run lint` - Run Biome linter only
+- `bun run format` - Format code with Biome
+- `bun run check` - Run Biome formatter, linter, and import sorting with auto-fix
+- `bun test` - Run all tests with Bun's native test runner
 
 ## 🎯 Learning Objectives
 
@@ -137,18 +138,19 @@ This project is designed to demonstrate and practice:
 2. Code Quality Gates:
    - `bun run check` - Biome linting & formatting
    - `bun run build` - TypeScript compilation + Vite build
-   - `bun test` - Unit tests (Vitest)
+   - `bun test` - Unit tests with Bun's built-in test runner
    - `tsc --noEmit` - Type checking without emit
 3. Deploy to Vercel preview environment
 4. Manual approval → Deploy to production
 ```
 
 **Focus Areas for Interview Preparation:**
-- Clean, maintainable code (automated formatting)
+- Clean, maintainable code (automated formatting with Biome)
 - TypeScript proficiency (strict type checking)
-- Testing knowledge (unit/component tests)
+- Testing knowledge (unit/component tests with Bun)
 - Build process understanding (Vite bundling)
-- Modern tooling familiarity (Biome vs ESLint/Prettier)
+- Modern tooling familiarity (Biome 2-100x faster than ESLint/Prettier)
+- Performance optimization (Bun vs npm/yarn)
 
 ### Environment Configuration
 

@@ -15,7 +15,7 @@ import type { AuthError, SignInCredentials, SignUpCredentials, User } from "../t
 
 // Interview Question #49: Error handling and user experience
 function mapFirebaseError(error: unknown): AuthError {
-  const code = (error as any)?.code || "unknown";
+  const code = (error as { code?: string })?.code || "unknown";
 
   switch (code) {
     case "auth/user-not-found":
@@ -114,7 +114,7 @@ export const authApi = {
       return mapFirebaseUser(result.user);
     } catch (error) {
       // Handle user cancellation gracefully
-      if ((error as any)?.code === "auth/popup-closed-by-user") {
+      if ((error as { code?: string })?.code === "auth/popup-closed-by-user") {
         throw {
           code: "auth/popup-closed-by-user",
           message: "Sign-in cancelled",

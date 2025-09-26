@@ -39,5 +39,9 @@ AUTH_SYSTEM.md
 # Completed features documentation
 COMPLETED.md
 
+# Learning tasks and documentation
+LEARNING_TASKS.md
+docs/
+
 # env files
 .env

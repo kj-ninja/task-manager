@@ -44,12 +44,7 @@ export function DashboardPage() {
             </CardHeader>
             <CardContent className="space-y-2">
               <Button className="w-full">Create New Task</Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={signOut}
-                disabled={isSigningOut}
-              >
+              <Button variant="outline" className="w-full" onClick={signOut} disabled={isSigningOut}>
                 {isSigningOut ? "Signing Out..." : "Sign Out"}
               </Button>
             </CardContent>

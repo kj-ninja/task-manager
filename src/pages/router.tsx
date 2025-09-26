@@ -1,5 +1,6 @@
 import { AuthGuard } from "@components/guards/AuthGuard";
 import { GuestGuard } from "@components/guards/GuestGuard";
+import { AppLayout } from "@components/layouts/AppLayout";
 import NotFound from "@pages/not-found";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
@@ -14,7 +15,9 @@ export default function AppRouter() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
         <Route element={<AuthGuard />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route element={<AppLayout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+          </Route>
         </Route>
 
         <Route element={<GuestGuard />}>

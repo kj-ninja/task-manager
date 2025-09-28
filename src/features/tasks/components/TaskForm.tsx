@@ -7,7 +7,6 @@ import { Textarea } from "@components/ui/textarea";
 import { PrioritySelect } from "@features/tasks/components/TaskPrioritySelect";
 import { type CreateTaskFormData, createTaskDefaults, createTaskSchema } from "@features/tasks/validation/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface TaskFormProps {
@@ -19,8 +18,6 @@ interface TaskFormProps {
 }
 
 export function TaskForm({ mode = "create", initialData, onSubmit, onCancel, isLoading = false }: TaskFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const form = useForm<CreateTaskFormData>({
     resolver: zodResolver(createTaskSchema),
     defaultValues: {
@@ -31,16 +28,13 @@ export function TaskForm({ mode = "create", initialData, onSubmit, onCancel, isL
 
   const handleSubmit = async (data: CreateTaskFormData) => {
     try {
-      setIsSubmitting(true);
       await onSubmit(data);
     } catch (error) {
       console.error(`${mode} task error:`, error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
-  const isFormLoading = isLoading || isSubmitting;
+  const isFormLoading = isLoading || form.formState.isSubmitting;
 
   return (
     <Form {...form}>

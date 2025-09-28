@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@components/ui/dialog";
 import type { CreateTaskFormData } from "@features/tasks/validation/schemas";
 
 import { TaskForm } from "./TaskForm";
@@ -22,15 +22,12 @@ export function TaskCreateModal({ open, onOpenChange, onSubmit, isLoading = fals
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Create New Task</DialogTitle>
-          <DialogDescription>Add a new task to your task list. Fill in the details below.</DialogDescription>
+      <DialogContent className="max-w-lg p-6">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="font-semibold text-lg">Create Task</DialogTitle>
         </DialogHeader>
 
-        <div className="mt-4">
-          <TaskForm mode="create" onSubmit={handleSubmit} onCancel={handleCancel} isLoading={isLoading} />
-        </div>
+        <TaskForm mode="create" onSubmit={handleSubmit} onCancel={handleCancel} isLoading={isLoading} />
       </DialogContent>
     </Dialog>
   );

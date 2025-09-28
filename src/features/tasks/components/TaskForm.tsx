@@ -44,18 +44,21 @@ export function TaskForm({ mode = "create", initialData, onSubmit, onCancel, isL
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         {/* Title Field */}
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                Title <span className="text-destructive">*</span>
-              </FormLabel>
               <FormControl>
-                <Input placeholder="Enter task title..." disabled={isFormLoading} autoFocus {...field} />
+                <Input
+                  placeholder="Task title *"
+                  disabled={isFormLoading}
+                  autoFocus
+                  className="text-base font-medium"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -68,12 +71,11 @@ export function TaskForm({ mode = "create", initialData, onSubmit, onCancel, isL
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Enter task description..."
+                  placeholder="Add description..."
                   disabled={isFormLoading}
-                  className="min-h-[100px]"
+                  className="min-h-[80px] resize-none"
                   {...field}
                 />
               </FormControl>
@@ -82,80 +84,82 @@ export function TaskForm({ mode = "create", initialData, onSubmit, onCancel, isL
           )}
         />
 
-        {/* Priority Field */}
-        <FormField
-          control={form.control}
-          name="priority"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Priority <span className="text-destructive">*</span>
-              </FormLabel>
-              <FormControl>
-                <PrioritySelect value={field.value} onValueChange={field.onChange} disabled={isFormLoading} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Due Date Field */}
-        <FormField
-          control={form.control}
-          name="dueDate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Due Date</FormLabel>
-              <FormControl>
-                <DatePicker
-                  date={field.value}
-                  onSelect={field.onChange}
-                  placeholder="Select due date"
-                  disabled={isFormLoading}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Category Field */}
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isFormLoading}>
+        {/* Inline Fields Row */}
+        <div className="grid grid-cols-3 gap-3">
+          {/* Priority Field */}
+          <FormField
+            control={form.control}
+            name="priority"
+            render={({ field }) => (
+              <FormItem>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
+                  <PrioritySelect
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    placeholder="Priority"
+                    disabled={isFormLoading}
+                  />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="personal">Personal</SelectItem>
-                  <SelectItem value="work">Work</SelectItem>
-                  <SelectItem value="shopping">Shopping</SelectItem>
-                  <SelectItem value="health">Health</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        {/* Estimated Minutes Field */}
+          {/* Category Field */}
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isFormLoading}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="personal">Personal</SelectItem>
+                      <SelectItem value="work">Work</SelectItem>
+                      <SelectItem value="shopping">Shopping</SelectItem>
+                      <SelectItem value="health">Health</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Due Date Field */}
+          <FormField
+            control={form.control}
+            name="dueDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <DatePicker
+                    date={field.value}
+                    onSelect={field.onChange}
+                    placeholder="Due date"
+                    disabled={isFormLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Estimated Time Field */}
         <FormField
           control={form.control}
           name="estimatedMinutes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Estimated Time (minutes)</FormLabel>
               <FormControl>
                 <Input
                   type="number"
-                  placeholder="60"
+                  placeholder="Estimated time (minutes)"
                   min="1"
                   max="1440"
                   disabled={isFormLoading}
@@ -173,7 +177,7 @@ export function TaskForm({ mode = "create", initialData, onSubmit, onCancel, isL
         />
 
         {/* Form Actions */}
-        <div className="flex justify-end gap-3 pt-4">
+        <div className="flex justify-end gap-3 pt-6">
           {onCancel && (
             <Button type="button" variant="outline" onClick={onCancel} disabled={isFormLoading}>
               Cancel

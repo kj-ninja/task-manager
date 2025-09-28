@@ -27,20 +27,7 @@ dist-ssr
 CLAUDE.md
 .claude
 
-# Development roadmap
-ROADMAP.md
-
-# Interview preparation
-INTERVIEW-PREP.md
-
-# Auth system documentation
-AUTH_SYSTEM.md
-
-# Completed features documentation
-COMPLETED.md
-
-# Learning tasks and documentation
-LEARNING_TASKS.md
+# Documentation directory (contains personal notes and detailed architecture docs)
 docs/
 
 # env files

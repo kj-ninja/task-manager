@@ -1,6 +1,7 @@
 import { Button } from "@components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
 import { useAuth, useAuthActions } from "@features/auth/hooks";
+import { TaskCreateButton } from "@features/tasks/components/TaskCreateButton";
 
 export function DashboardPage() {
   const { user, isSigningOut } = useAuth();
@@ -43,7 +44,7 @@ export function DashboardPage() {
               <CardDescription>Get started quickly</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <Button className="w-full">Create New Task</Button>
+              <TaskCreateButton />
               <Button variant="outline" className="w-full" onClick={signOut} disabled={isSigningOut}>
                 {isSigningOut ? "Signing Out..." : "Sign Out"}
               </Button>

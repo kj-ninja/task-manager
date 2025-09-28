@@ -40,13 +40,14 @@ export const createTaskSchema = z.object({
 
   description: z.string().max(1000, "Description must be less than 1000 characters").optional().or(z.literal("")), // Allow empty string
 
-  priority: taskPrioritySchema.default("medium"),
+  priority: taskPrioritySchema,
 
   dueDate: z.date().min(new Date(), "Due date cannot be in the past").optional(),
 
   category: taskCategorySchema.optional(),
 
-  tags: z.array(z.string().min(1).max(20)).max(10, "Maximum 10 tags allowed").optional().default([]),
+  // TODO: Add label field for future implementation
+  // label: z.string().max(50, "Label must be less than 50 characters").optional(),
 
   estimatedMinutes: z
     .number()
@@ -79,7 +80,8 @@ export const updateTaskSchema = z.object({
 
   category: taskCategorySchema.optional(),
 
-  tags: z.array(z.string().min(1).max(20)).max(10, "Maximum 10 tags allowed").optional(),
+  // TODO: Add label field for future implementation
+  // label: z.string().max(50, "Label must be less than 50 characters").optional(),
 
   estimatedMinutes: z
     .number()
@@ -121,7 +123,8 @@ export const taskFiltersSchema = z.object({
     })
     .optional(),
 
-  tags: z.array(z.string()).optional(),
+  // TODO: Add label filter for future implementation
+  // label: z.array(z.string()).optional(),
 
   search: z.string().max(100, "Search query too long").optional(),
 });
@@ -189,7 +192,6 @@ export const createTaskDefaults: CreateTaskFormData = {
   title: "",
   description: "",
   priority: "medium",
-  tags: [],
 };
 
 /**

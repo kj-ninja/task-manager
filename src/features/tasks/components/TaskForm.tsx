@@ -1,6 +1,6 @@
 import { Button } from "@components/ui/button";
 import { DatePicker } from "@components/ui/date-picker";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@components/ui/form";
 import { Input } from "@components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@components/ui/select";
 import { Textarea } from "@components/ui/textarea";
@@ -56,7 +56,7 @@ export function TaskForm({ mode = "create", initialData, onSubmit, onCancel, isL
                   placeholder="Task title *"
                   disabled={isFormLoading}
                   autoFocus
-                  className="text-base font-medium"
+                  className="font-medium text-base"
                   {...field}
                 />
               </FormControl>

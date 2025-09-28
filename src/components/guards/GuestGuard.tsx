@@ -1,7 +1,6 @@
+import { LoadingScreen } from "@components/ui/spinner";
 import { useAuth } from "@features/auth/hooks";
 import { Navigate, Outlet } from "react-router-dom";
-
-import { LoadingScreen } from "../ui/spinner";
 
 export function GuestGuard() {
   const { user, isLoading } = useAuth();

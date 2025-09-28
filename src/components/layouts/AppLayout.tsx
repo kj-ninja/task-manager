@@ -1,6 +1,5 @@
+import { SidebarProvider, SidebarTrigger } from "@components/ui/sidebar";
 import { Outlet, useLocation } from "react-router-dom";
-
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 import { AppSidebar } from "./AppSidebar";
 import { UserDropdown } from "./UserDropdown";

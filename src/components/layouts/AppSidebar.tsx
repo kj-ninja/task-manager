@@ -1,6 +1,3 @@
-import { Calendar, CheckSquare, Home, Settings, User } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-
 import {
   Sidebar,
   SidebarContent,
@@ -12,8 +9,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { useAuth } from "@/features/auth/hooks";
+} from "@components/ui/sidebar";
+import { useAuth } from "@features/auth/hooks";
+import { Calendar, CheckSquare, Home, Settings, User } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
   {

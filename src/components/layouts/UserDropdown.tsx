@@ -1,8 +1,5 @@
-import { LogOut, Settings, User } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@components/ui/avatar";
+import { Button } from "@components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +7,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAuth, useAuthActions } from "@/features/auth/hooks";
+} from "@components/ui/dropdown-menu";
+import { useAuth, useAuthActions } from "@features/auth/hooks";
+import { LogOut, Settings, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function UserDropdown() {
   const { user } = useAuth();

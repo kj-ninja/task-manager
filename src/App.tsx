@@ -1,6 +1,7 @@
 import { LoadingScreen } from "@components/ui/spinner";
 import { useAuthInitialization, useAuthInitializer } from "@features/auth/hooks";
 import AppRouter from "@pages/router";
+import { ModalHost } from "@services/modals";
 import { queryClient } from "@services/query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
@@ -18,6 +19,7 @@ function App() {
       <div className="min-h-screen w-full bg-gray-50">
         <AppRouter />
         <Toaster position="top-right" />
+        <ModalHost />
       </div>
     </QueryClientProvider>
   );

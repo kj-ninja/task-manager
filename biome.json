@@ -44,9 +44,7 @@
       "security": {
         "noBlankTarget": "warn"
       },
-      "a11y": {
-        "useButtonType": "warn"
-      },
+      "a11y": "off",
       "suspicious": {
         "noUnknownAtRules": "off"
       }

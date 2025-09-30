@@ -1,12 +1,13 @@
+import { SidebarProvider, SidebarTrigger } from "@components/ui/sidebar";
+import { useIsMobile } from "@hooks/use-mobile";
 import { Outlet, useLocation } from "react-router-dom";
-
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 import { AppSidebar } from "./AppSidebar";
 import { UserDropdown } from "./UserDropdown";
 
 export function AppLayout() {
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   const getPageTitle = (pathname: string) => {
     switch (pathname) {
@@ -31,7 +32,7 @@ export function AppLayout() {
           {/* Header with sidebar trigger and user dropdown */}
           <header className="flex h-16 items-center justify-between gap-4 border-b bg-background px-6">
             <div className="flex items-center gap-4">
-              <SidebarTrigger />
+              {isMobile ? <SidebarTrigger /> : null}
               <h2 className="font-semibold text-lg">{getPageTitle(location.pathname)}</h2>
             </div>
             <UserDropdown />

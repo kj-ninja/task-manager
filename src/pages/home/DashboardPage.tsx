@@ -1,11 +1,12 @@
 import { Button } from "@components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
 import { useAuth, useAuthActions } from "@features/auth/hooks";
-import { TaskCreateButton } from "@features/tasks/components/TaskCreateButton";
+import { useTaskCreateModal } from "@features/tasks/hooks/useTaskCreateModal";
 
 export function DashboardPage() {
   const { user, isSigningOut } = useAuth();
   const { signOut } = useAuthActions();
+  const { openTaskCreateModal } = useTaskCreateModal();
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
@@ -44,7 +45,9 @@ export function DashboardPage() {
               <CardDescription>Get started quickly</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <TaskCreateButton />
+              <Button onClick={openTaskCreateModal} className="w-full">
+                Create Task
+              </Button>
               <Button variant="outline" className="w-full" onClick={signOut} disabled={isSigningOut}>
                 {isSigningOut ? "Signing Out..." : "Sign Out"}
               </Button>

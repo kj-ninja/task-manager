@@ -1,3 +1,4 @@
+import { Button } from "@components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -11,6 +12,7 @@ import {
   SidebarMenuItem,
 } from "@components/ui/sidebar";
 import { useAuth } from "@features/auth/hooks";
+import { useTaskCreateModal } from "@features/tasks/hooks/useTaskCreateModal";
 import { Calendar, CheckSquare, Home, Settings, SquarePen, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -40,12 +42,15 @@ const menuItems = [
 export function AppSidebar() {
   const { user } = useAuth();
   const location = useLocation();
+  const { openTaskCreateModal } = useTaskCreateModal();
 
   return (
     <Sidebar>
       <SidebarHeader className="flex h-16 items-center justify-between border-sidebar-border border-b px-6">
         <h1 className="font-semibold text-lg text-sidebar-foreground">Task Manager</h1>
-        <SquarePen className="cursor-pointer text-sidebar-foreground" size={16} />
+        <Button variant="ghost" size="icon" onClick={openTaskCreateModal}>
+          <SquarePen size={16} />
+        </Button>
       </SidebarHeader>
 
       <SidebarContent>

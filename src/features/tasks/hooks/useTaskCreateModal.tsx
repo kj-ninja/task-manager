@@ -1,12 +1,11 @@
-import { Button } from "@components/ui/button";
+import { useModalManager } from "@services/modals";
 import { useState } from "react";
 
+import { TaskCreateModal } from "../components/TaskCreateModal";
 import type { CreateTaskFormData } from "../validation/schemas";
 
-import { TaskCreateModal } from "./TaskCreateModal";
-
-export function TaskCreateButton() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export function useTaskCreateModal() {
+  const { openModal } = useModalManager();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreateTask = async (data: CreateTaskFormData) => {
@@ -25,18 +24,11 @@ export function TaskCreateButton() {
     }
   };
 
-  return (
-    <>
-      <Button onClick={() => setIsModalOpen(true)} className="w-full">
-        Create Task
-      </Button>
+  const openTaskCreateModal = () => {
+    openModal(<TaskCreateModal onSubmit={handleCreateTask} isLoading={isLoading} />, {
+      id: "task-create-modal",
+    });
+  };
 
-      <TaskCreateModal
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onSubmit={handleCreateTask}
-        isLoading={isLoading}
-      />
-    </>
-  );
+  return { openTaskCreateModal };
 }

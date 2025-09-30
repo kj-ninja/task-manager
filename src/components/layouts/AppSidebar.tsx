@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
 } from "@components/ui/sidebar";
 import { useAuth } from "@features/auth/hooks";
-import { Calendar, CheckSquare, Home, Settings, User } from "lucide-react";
+import { Calendar, CheckSquare, Home, Settings, SquarePen, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
@@ -43,8 +43,9 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="flex h-16 items-center justify-center border-sidebar-border border-b px-6">
+      <SidebarHeader className="flex h-16 items-center justify-between border-sidebar-border border-b px-6">
         <h1 className="font-semibold text-lg text-sidebar-foreground">Task Manager</h1>
+        <SquarePen className="cursor-pointer text-sidebar-foreground" size={16} />
       </SidebarHeader>
 
       <SidebarContent>
